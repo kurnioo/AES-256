@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AES 256 Encryption & Decryption</title>
+    <script src="https://cdn.jsdelivr.net/npm/crypto-js@4.1.1/crypto-js.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 50px;
+            background-color: #f4f4f4;
+        }
+        input, textarea {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+
+<h1>AES 256-bit Encryption and Decryption</h1>
+
+<div>
+    <label for="key">Enter 32-character AES key:</label>
+    <input type="text" id="key" maxlength="32" placeholder="Enter 32-character key" required>
+</div>
+
+<div>
+    <label for="data">Enter data to encrypt:</label>
+    <textarea id="data" rows="4" placeholder="Enter data here..."></textarea>
+</div>
+
+<button onclick="encryptData()">Encrypt</button>
+
+<h2>Encrypted Data:</h2>
+<p id="encrypted"></p>
+
+<button onclick="decryptData()">Decrypt</button>
+
+<h2>Decrypted Data:</h2>
+<p id="decrypted"></p>
+
+<script>
+    function encryptData() {
+        const keyInput = document.getElementById('key').value;
+        const data = document.getElementById('data').value;
+
+        if (keyInput.length !== 32) {
+            alert('Key must be 32 characters long.');
+            return;
+        }
+
+        const key = CryptoJS.enc.Utf8.parse(keyInput);
+        const iv = CryptoJS.lib.WordArray.random(16);
+
+        const encrypted = CryptoJS.AES.encrypt(data, key, { iv: iv, mode: CryptoJS.mode.CBC, padding: CryptoJS.pad.Pkcs7 });
+        const encryptedData = iv.concat(encrypted.ciphertext).toString(CryptoJS.enc.Base64);
+
+        document.getElementById('encrypted').textContent = encryptedData;
+    }
+
+    function decryptData() {
+        const keyInput = document.getElementById('key').value;
+        const encryptedData = document.getElementById('encrypted').textContent;
+
+        if (keyInput.length !== 32) {
+            alert('Key must be 32 characters long.');
+            return;
+        }
+
+        const key = CryptoJS.enc.Utf8.parse(keyInput);
+        const encryptedBytes = CryptoJS.enc.Base64.parse(encryptedData);
+
+        const iv = CryptoJS.lib.WordArray.create(encryptedBytes.words.slice(0, 4));
+        const ciphertext = CryptoJS.lib.WordArray.create(encryptedBytes.words.slice(4));
+
+        const decrypted = CryptoJS.AES.decrypt({ ciphertext: ciphertext }, key, { iv: iv, mode: CryptoJS.mode.CBC, padding: CryptoJS.pad.Pkcs7 });
+
+        document.getElementById('decrypted').textContent = decrypted.toString(CryptoJS.enc.Utf8);
+    }
+</script>
+
+</body>
+</html>
