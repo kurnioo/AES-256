@@ -7,50 +7,108 @@
     <script src="https://cdn.jsdelivr.net/npm/crypto-js@4.1.1/crypto-js.js"></script>
     <style>
         body {
-            font-family: Arial, sans-serif;
-            margin: 50px;
-            background-color: #f4f4f4;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f0f2f5;
+            color: #333;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .container {
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 600px;
+            box-sizing: border-box;
+        }
+        h1 {
+            text-align: center;
+            font-size: 24px;
+            margin-bottom: 30px;
+            color: #4CAF50;
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
         }
         input, textarea {
             width: 100%;
-            padding: 10px;
-            margin: 10px 0;
+            padding: 12px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+            box-sizing: border-box;
+        }
+        textarea {
+            resize: vertical;
         }
         button {
-            padding: 10px 20px;
+            width: 100%;
+            padding: 12px;
             background-color: #4CAF50;
             color: white;
             border: none;
+            border-radius: 5px;
+            font-size: 16px;
             cursor: pointer;
+            transition: background-color 0.3s ease;
         }
         button:hover {
             background-color: #45a049;
+        }
+        .result {
+            background-color: #f9f9f9;
+            padding: 15px;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+            margin-top: 10px;
+            word-wrap: break-word;
+            font-family: 'Courier New', Courier, monospace;
+        }
+        .footer {
+            margin-top: 30px;
+            text-align: center;
+            font-size: 12px;
+            color: #777;
         }
     </style>
 </head>
 <body>
 
-<h1>AES 256-bit Encryption and Decryption</h1>
+<div class="container">
+    <h1>AES 256-bit Encryption & Decryption</h1>
 
-<div>
-    <label for="key">Enter 32-character AES key:</label>
-    <input type="text" id="key" maxlength="32" placeholder="Enter 32-character key" required>
+    <div>
+        <label for="key">Enter 32-character AES key:</label>
+        <input type="text" id="key" maxlength="32" placeholder="Enter 32-character key" required>
+    </div>
+
+    <div>
+        <label for="data">Enter data to encrypt:</label>
+        <textarea id="data" rows="4" placeholder="Enter data here..."></textarea>
+    </div>
+
+    <button onclick="encryptData()">Encrypt</button>
+
+    <h2>Encrypted Data:</h2>
+    <div id="encrypted" class="result"></div>
+
+    <button onclick="decryptData()">Decrypt</button>
+
+    <h2>Decrypted Data:</h2>
+    <div id="decrypted" class="result"></div>
+
+    <div class="footer">
+        <p>Developed with <span style="color: red;">&#10084;</span> using CryptoJS</p>
+    </div>
 </div>
-
-<div>
-    <label for="data">Enter data to encrypt:</label>
-    <textarea id="data" rows="4" placeholder="Enter data here..."></textarea>
-</div>
-
-<button onclick="encryptData()">Encrypt</button>
-
-<h2>Encrypted Data:</h2>
-<p id="encrypted"></p>
-
-<button onclick="decryptData()">Decrypt</button>
-
-<h2>Decrypted Data:</h2>
-<p id="decrypted"></p>
 
 <script>
     function encryptData() {
